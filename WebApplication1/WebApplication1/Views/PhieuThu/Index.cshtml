@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/MenuLayout.cshtml";
+}
+
+<h2>Phiếu Thu</h2>
+
+<div class="table">
+    <button type="button" class="btn btn-info btn-sm format-button button" data-toggle="modal" data-target="#Them">Nhập Phiếu</button>
+    <form action="" class="search-form push-left">
+        <div class="form-group has-feedback">
+            <label for="search" class="sr-only">Search</label>
+            <input type="text" class="form-control" name="search" id="search" placeholder="search">
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+        </div>
+    </form>
+    <table class="table table-bordered table-hover table-loaiveso-noidung">
+        <tr style="background-color:#abebe2">
+            <th>Ngày</th>
+            <th>Đại Lý</th>
+            <th>Số Tiền</th>
+            <th style="width: 50px;"></th>
+        </tr>
+        @*   @foreach (var item in Model)
+        {
+            <tr>
+                <td class="id">
+                    @Html.DisplayFor(modelItem => item.MaLvs)
+                </td>
+                <td class="tinh">
+                    @Html.DisplayFor(modelItem => item.Tinh)
+                </td>
+                <td class="tinhtrang">
+                    @Html.DisplayFor(modelItem => item.TinhTrang)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm format-button btnSua" data-toggle="modal" data-target="#Sua">Sửa</button>
+                </td>
+            </tr>
+
+        }*@
+    </table>
+</div>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="~/css/table.css" rel="stylesheet" />
+
+
