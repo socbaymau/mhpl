@@ -1,0 +1,33 @@
+﻿@*
+    @*For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model IEnumerable<LoaiVeSo>
+
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Mã đại lý</label>
+        <div class="col-lg-9"> <input class="form-control" readonly value="@ViewBag.ThongTinDL.MaDl" name="pmadl" /> </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label">Tên đại lý</label>
+        <div class="col-lg-9"> <input class="form-control" readonly value="@ViewBag.ThongTinDL.Ten" /> </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label"> Loại vé số </label>
+        <div class="col-lg-9">
+            <select class="form-control" id="loaiveso" name="pmalvs">
+                @foreach (var item in Model)
+                {
+                    <option value="@item.MaLvs">@item.Tinh</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label"> Ngày đăng ký</label>
+            <div class="col-lg-9"> <input class="form-control" type="date" value="0" min="0" name="pngaydki" /> </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label"> Số lượng </label>
+            <div class="col-lg-9"> <input class="form-control" type="number" value="0" min="0" name="psoluong" /> </div>
+        </div>
+    </div>
+

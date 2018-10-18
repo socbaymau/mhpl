@@ -1,0 +1,189 @@
+﻿@model IEnumerable<LoaiVeSo>
+@{
+    ViewData["Title"] = "LoaiVeso";
+    Layout = "~/Views/Shared/MenuLayout.cshtml";
+}
+<h2>LOẠI VÉ SỐ</h2>
+<div class="table">
+    <button type="button" class="btn btn-info btn-sm format-button button" data-toggle="modal" data-target="#Them">Thêm</button>
+    @*<form action="" class="search-form push-left">
+            <div class="form-group has-feedback">
+                <label for="search" class="sr-only">Search</label>
+                <input type="text" class="form-control" name="search" id="search" placeholder="search">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+        </form>*@
+    @*<div class="w3l_search">
+            <form action="#" method="post" class="search-form push-left">
+                <input type="text" name="search" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}" required="">
+                <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </form>
+        </div>*@
+    <form class="search-form" asp-controller="QuanLi" asp-action="TimKiemVS">
+
+        <input type="text" class="form-control form-timkiem" placeholder="Tìm kiếm" id="search" name="search" />
+        <button type="submit" class="btn btn-info btn-sm format-button button btn-search">
+            @*<i class="fa fa-search"></i>*@
+            Tìm
+        </button>
+    </form>
+    <table class="table table-bordered table-hover table-loaiveso-noidung" style="width: 100%; position: relative;">
+        <tr style="background-color:#abebe2">
+            <th>Mã vé số</th>
+            <th>Tỉnh</th>
+            <th>Tình trạng</th>
+            <th style="width: 50px;"></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="id">
+                    @Html.DisplayFor(modelItem => item.MaLvs)
+                </td>
+                <td class="tinh">
+                    @Html.DisplayFor(modelItem => item.Tinh)
+                </td>
+                <td class="tinhtrang">
+                    @Html.DisplayFor(modelItem => item.TinhTrang)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm format-button btnSua" data-toggle="modal" data-target="#Sua">Sửa</button>
+                </td>
+            </tr>
+
+        }
+    </table>
+    <div class="phantrang">
+        <ul class="pagination modal-1">
+            @if (ViewBag.TrangHienTai == 1)
+            {
+                <li><a><i class="fa fa-chevron-left"></i></a></li>
+            }
+            else
+            {
+                <li><a asp-controller="QuanLi" asp-action="LoaiVeso" asp-route-pagenumber="@Html.Raw(@ViewBag.TrangHienTai - 1)"><i class="fa fa-chevron-left"></i></a></li>
+            }
+            @for (int i = 1; i <= ViewBag.TongTrang; i++)
+            {
+                @if (i == ViewBag.TrangHienTai)
+                {
+                    <li><a><b>@i</b></a></li>
+                }
+                else
+                {
+                    <li><a asp-controller="QuanLi" asp-action="LoaiVeso" asp-route-pagenumber="@i">@i</a></li>
+                }
+            }
+            @if (ViewBag.TrangHienTai == ViewBag.TongTrang)
+            {
+                <li><a><i class="fa fa-chevron-right"></i></a></li>
+            }
+            else
+            {
+                <li><a asp-controller="QuanLi" asp-action="LoaiVeso" asp-route-pagenumber="@Html.Raw(@ViewBag.TrangHienTai + 1)"><i class="fa fa-chevron-right"></i></a></li>
+            }
+        </ul>
+    </div>
+    <!-- Modal Them -->
+    <form asp-action="ThemVS" asp-controller="QuanLi" method="post">
+        <div id="Them" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Thêm</h4>
+                    </div>
+                    <div class="modal-body">
+                        @*<div class="form-group">
+                                <label for="usr">Id:</label>
+                                <input type="text" class="form-control" id="id" disabled>
+                            </div>*@
+                        @*<div class="form-group">
+                            <label for="usr">Mã vé số:</label>
+                            <input type="text" class="form-control" id="mvs" readonly>
+                        </div>*@
+                        <div class="form-group">
+                            <label for="usr">Tỉnh:</label>
+                            <input type="text" class="form-control" id="tinh" name="Tinh" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Tình trạng</label>
+                            <select class="form-control" id="tt" name="TinhTrang" required>
+                                <option value="Khoá">Khoá</option>
+                                <option value="Không Khoá">Không khoá</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal Sua-->
+    <form asp-action="SuaVS" asp-controller="QuanLi" method="post">
+        <div id="Sua" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Sửa</h4>
+                    </div>
+                    <div class="modal-body">
+                        @*<div class="form-group">
+                                <label for="usr">Id:</label>
+                                <input type="text" class="form-control" id="id" disabled>
+                            </div>*@
+                        <div class="form-group">
+                            <label for="usr">Mã vé số:</label>
+                            <input type="text" class="form-control ma-edit" id="mvs" name="edMaVS" readonly>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Tỉnh:</label>
+                            <input type="text" class="form-control tinh-edit" name="edTinh">
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Tình trạng</label>
+                            <select class="form-control" id="tt" name="edTinhTrang">
+                                <option value="Khoá">Khoá</option>
+                                <option value="Không khoá">Không khoá</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="~/css/table.css" rel="stylesheet" />
+@*<link href="~/css/style2.css" rel="stylesheet" />*@
+<script>
+    $(".btnSua").click(function () {
+        var Ma = $(this).closest('tr').find('.id').text();
+        var sTinh = $(this).closest('tr').find('.tinh').text();
+        var sTinhTrang = $(this).closest('tr').find('.tinhtrang').text();
+
+        $(".tinh-edit").val(sTinh.trim());
+        $(".ma-edit").val(Ma.trim());
+    })
+</script>
