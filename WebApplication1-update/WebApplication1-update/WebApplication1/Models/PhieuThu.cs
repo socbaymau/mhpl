@@ -8,7 +8,7 @@ namespace WebApplication1.Models
         public int MaPt { get; set; }
         public int? MaDl { get; set; }
         public DateTime? Ngay { get; set; }
-        public decimal? SoTien { get; set; }
+        public double? SoTien { get; set; }
 
         public DaiLy MaDlNavigation { get; set; }
     }

@@ -154,7 +154,7 @@
                         </div>
                         <div class="form-group">
                             <label for="usr">Tình trạng</label>
-                            <select class="form-control" id="tt" name="edTinhTrang">
+                            <select class="form-control" id="edtt" name="edTinhTrang">
                                 <option value="Khoá">Khoá</option>
                                 <option value="Không khoá">Không khoá</option>
                             </select>
@@ -182,7 +182,17 @@
         var Ma = $(this).closest('tr').find('.id').text();
         var sTinh = $(this).closest('tr').find('.tinh').text();
         var sTinhTrang = $(this).closest('tr').find('.tinhtrang').text();
-
+        if (sTinhTrang != '') {
+            $("#edtt option").each(function () {
+                if ($(this).text().includes(sTinhTrang)) {
+                    $(this).attr('selected', true);
+                    //return;
+                }
+                else {
+                    $(this).attr('selected', false);
+                }
+            });
+        }
         $(".tinh-edit").val(sTinh.trim());
         $(".ma-edit").val(Ma.trim());
     })

@@ -12,54 +12,53 @@ namespace WebApplication1.Controllers
     {
         private readonly VESOContext vsc;
         // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View();
-        }
+
         public PhieuThuController(VESOContext context)
         {
             vsc = context;
         }
-        public IActionResult PhieuThu()
+        public IActionResult Index()
         {
-            List<PhieuThu> list = new List<PhieuThu>();
-            list = vsc.PhieuThu.Include(pt => pt.MaDlNavigation).ToList();
-            ViewData["dsDaily"] = vsc.DaiLy.ToList();
+            List<PhieuThu> list = vsc.PhieuThu.OrderBy(p => p.MaPt).Include(p => p.MaDlNavigation).ToList();
             List<DaiLy> daily = vsc.DaiLy.ToList();
+            ViewBag.DaiLy = daily;
             return View(list);
         }
         public IActionResult ThemPT(String ngay, String daily, String tien)
         {
             PhieuThu pt = new PhieuThu();
             pt.MaDl = Convert.ToInt32(daily);
-            pt.SoTien = Convert.ToInt32(tien);
             pt.Ngay = Convert.ToDateTime(ngay);
+            pt.SoTien = float.Parse(tien);
             vsc.PhieuThu.Add(pt);
             vsc.SaveChanges();
-            return RedirectToAction("PhieuThu");
+            return RedirectToAction("Index");
         }
-        public IActionResult SuaThieuThu(String id, String ngay, String daily, String tien)
+        //public IActionResult SuaThieuThu(String id, String ngay, String daily, String tien)
+        //{
+        //    var pt = vsc.PhieuThu.Where(x => x.MaPt == Convert.ToInt32(id)).SingleOrDefault();
+        //    pt.Ngay = Convert.ToDateTime(ngay);
+        //    pt.SoTien = Convert.ToDecimal(tien);
+        //    pt.MaDl = Convert.ToInt32(daily);
+        //    vsc.SaveChanges();
+        //    return RedirectToAction("PhieuThu");
+        //}
+        public IActionResult Sua(int maed, int eddaily, DateTime edngay, float edtien)
         {
-            var pt = vsc.PhieuThu.Where(x => x.MaPt == Convert.ToInt32(id)).SingleOrDefault();
-            pt.Ngay = Convert.ToDateTime(ngay);
-            pt.SoTien = Convert.ToDecimal(tien);
-            pt.MaDl = Convert.ToInt32(daily);
+            PhieuThu pt = vsc.PhieuThu.Where(p => p.MaPt == maed).SingleOrDefault();
+            pt.MaDl = eddaily;
+            pt.Ngay = edngay;
+            pt.SoTien = edtien;
             vsc.SaveChanges();
-            return RedirectToAction("PhieuThu");
-        }
-        public IActionResult suaPT(String id)
-        {
-            ViewData["dsDL"] = vsc.DaiLy.ToList();
-            PhieuThu pt = new PhieuThu();
-            pt = vsc.PhieuThu.Where(x => x.MaPt == Convert.ToInt32(id)).SingleOrDefault();
-            return View(pt);
+            return RedirectToAction("Index");
         }
         public IActionResult timkiem(String str)
         {
             List<PhieuThu> list = new List<PhieuThu>();
-            list = vsc.PhieuThu.Where(x => x.Ngay.Value.ToShortDateString().Contains(str)).Include(pt => pt.MaDlNavigation).ToList();
-            ViewData["dsDaily"] = vsc.DaiLy.ToList();
-            return View("PhieuThu",list);
+            list = vsc.PhieuThu.Where(pt => pt.MaPt.ToString().Contains(str) || pt.MaDlNavigation.Ten.Contains(str) || pt.Ngay.ToString().Contains(str) || pt.SoTien.ToString().Contains(str)).ToList();
+            List<DaiLy> daily = vsc.DaiLy.ToList();
+            ViewBag.DaiLy = daily;
+            return View("Index",list);
         }
     }
 }

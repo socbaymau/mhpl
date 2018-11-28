@@ -46,8 +46,6 @@ namespace WebApplication1.Models
 
                 entity.Property(e => e.Ngay).HasColumnType("datetime");
 
-                entity.Property(e => e.SoTien).HasColumnType("money");
-
                 entity.HasOne(d => d.MaDlNavigation)
                     .WithMany(p => p.CongNo)
                     .HasForeignKey(d => d.MaDl)
@@ -75,11 +73,9 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.MaGiai);
 
-                entity.Property(e => e.GhiChu).HasMaxLength(50);
-
-                entity.Property(e => e.SoTien).HasColumnType("money");
-
-                entity.Property(e => e.TenGiai).HasMaxLength(50);
+                entity.Property(e => e.TenGiai)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Kqxs>(entity =>
@@ -97,12 +93,14 @@ namespace WebApplication1.Models
                 entity.HasOne(d => d.MaGiaiNavigation)
                     .WithMany(p => p.Kqxs)
                     .HasForeignKey(d => d.MaGiai)
-                    .HasConstraintName("FK_KQXS_Giai");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_KQXS_Gia_MaGiai");
 
                 entity.HasOne(d => d.MaLvsNavigation)
                     .WithMany(p => p.Kqxs)
                     .HasForeignKey(d => d.MaLvs)
-                    .HasConstraintName("FK_KQXS_LoaiVeSo");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_KQXS_LoaiVeSo_Malvs");
             });
 
             modelBuilder.Entity<LoaiVeSo>(entity =>
@@ -145,18 +143,13 @@ namespace WebApplication1.Models
 
                 entity.Property(e => e.MaPc).HasColumnName("MaPC");
 
-                entity.Property(e => e.MaDl).HasColumnName("MaDL");
+                entity.Property(e => e.Ngay).HasColumnType("date");
 
-                entity.Property(e => e.Ngay).HasColumnType("datetime");
+                entity.Property(e => e.NoiDung).HasMaxLength(100);
 
-                entity.Property(e => e.NoiDung).HasMaxLength(250);
-
-                entity.Property(e => e.SoTien).HasColumnType("money");
-
-                entity.HasOne(d => d.MaDlNavigation)
-                    .WithMany(p => p.PhieuChi)
-                    .HasForeignKey(d => d.MaDl)
-                    .HasConstraintName("FK_PhieuChi_DaiLy");
+                entity.Property(e => e.TenPhieuChi)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<PhieuThu>(entity =>
@@ -168,8 +161,6 @@ namespace WebApplication1.Models
                 entity.Property(e => e.MaDl).HasColumnName("MaDL");
 
                 entity.Property(e => e.Ngay).HasColumnType("datetime");
-
-                entity.Property(e => e.SoTien).HasColumnType("money");
 
                 entity.HasOne(d => d.MaDlNavigation)
                     .WithMany(p => p.PhieuThu)

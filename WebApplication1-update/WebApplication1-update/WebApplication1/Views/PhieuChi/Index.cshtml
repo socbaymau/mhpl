@@ -1,0 +1,159 @@
+﻿
+@model IEnumerable<PhieuChi>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/MenuLayout.cshtml";
+}
+<div class="table">
+    <button type="button" class="btn btn-info btn-sm format-button button" data-toggle="modal" data-target="#Them">Nhập Phiếu</button>
+    <form class="search-form" asp-controller="PhieuChi" asp-action="timkiem" method="post">
+
+        <input type="search" class="form-control form-timkiem" placeholder="Nhập" name="str" />
+        <button type="submit" class="btn btn-info btn-sm format-button button btn-search" data-toggle="modal">
+            @*<i class="fa fa-search"></i>*@
+            Tìm
+        </button>
+
+    </form>
+    <table class="table table-bordered table-hover table-loaiveso-noidung">
+        <tr style="background-color:#abebe2">
+            <th>Mã phiếu chi</th>
+            <th>Tên phiếu chi</th>
+            <th>Ngày</th>
+            <th>Số Tiền</th>
+            <th>Nội dung</th>
+            <th style="width: 50px;"></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="item_ma">@item.MaPc</td>
+                <td class="item_ten">
+                    @Html.DisplayFor(modelItem => item.TenPhieuChi)
+                </td>
+                <td class="item_ngay">
+                    @Html.DisplayFor(modelItem => item.Ngay)
+                </td>
+                <td class="item_tien">
+                    @Html.DisplayFor(modelItem => item.SoTien)
+                </td>
+                <td class="item_noidung">@item.NoiDung</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm format-button btnSua" data-toggle="modal" data-target="#Sua">Sửa</button>
+                </td>
+            </tr>
+        }
+    </table>
+    <form asp-action="ThemPC" asp-controller="PhieuChi" method="post">
+        <div id="Them" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Thêm</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Tên phiếu chi</label>
+                            <input type="text" class="form-control" id="tenphieuchi" name="ten" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Ngày:</label>
+                            <input type="date" class="form-control" id="Ngay" name="ngay" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Số Tiền:</label>
+                            <input type="text" class="form-control" id="Tien" name="tien" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Nội dung</label>
+                            <input type="text" class="form-control" id="noidung" name="noidung"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <form asp-action="Sua" asp-controller="PhieuChi" method="post">
+        <div id="Sua" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Sửa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Mã phiếu chi</label>
+                            <input type="text" class="form-control" id="ed_ma" name="edma" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Tên phiếu chi</label>
+                            <input type="text" class="form-control" id="ed_ten" name="edten" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Ngày:</label>
+                            <input type="date" class="form-control" id="ed_ngay" name="edngay" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Số Tiền:</label>
+                            <input type="text" class="form-control" id="ed_tien" name="edtien" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Nội dung</label>
+                            <input type="text" class="form-control" id="ed_noidung" name="ednoidung" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="~/css/table.css" rel="stylesheet" />
+<script>
+    $(".btnSua").click(function () {
+        var Ma = $(this).closest('tr').find('.item_ma').text().trim();
+        var sTen = $(this).closest('tr').find('.item_ten').text().trim();
+        var sNgay = $(this).closest('tr').find('.item_ngay').text();
+        var sTien = $(this).closest('tr').find('.item_tien').text().trim();
+        var sNoiDung = $(this).closest('tr').find('.item_noidung').text().trim();
+
+        sNgay = sNgay.trim();
+        let month = sNgay.substring(0, sNgay.indexOf('/'));
+        if (parseInt(month) < 10) {
+            month = '0' + month;
+        }
+        sNgay = sNgay.substring(sNgay.indexOf('/') + 1);
+        let day = sNgay.substring(0, sNgay.indexOf('/'));
+        if (parseInt(day) < 10) {
+            day = '0' + day;
+        }
+        sNgay = sNgay.substring(sNgay.indexOf('/') + 1);
+        let year = sNgay.substring(0, sNgay.indexOf(' '));
+        $("#ed_ten").val(sTen.trim());
+        $("#ed_ngay").val(`${year}-${month}-${day}`);
+        $("#ed_tien").val(sTien.trim());
+        $("#ed_noidung").val(sNoiDung.trim());
+        $("#ed_ma").val(Ma.trim());
+    })
+</script>
+

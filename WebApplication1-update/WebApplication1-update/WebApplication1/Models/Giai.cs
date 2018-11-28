@@ -12,8 +12,10 @@ namespace WebApplication1.Models
 
         public int MaGiai { get; set; }
         public string TenGiai { get; set; }
-        public decimal? SoTien { get; set; }
-        public string GhiChu { get; set; }
+        public int? SoLuongGiai { get; set; }
+        public int? SoLanQuay { get; set; }
+        public int? So { get; set; }
+        public double? TriGia { get; set; }
 
         public ICollection<Kqxs> Kqxs { get; set; }
     }

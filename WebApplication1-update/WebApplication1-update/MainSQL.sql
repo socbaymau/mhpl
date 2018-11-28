@@ -1,48 +1,5 @@
-﻿alter table PhanPhoi add TiLe float
-drop table PhanPhoi
-go
-drop table SLDangKy
-CREATE TABLE SLDangKy
-(
-	MaSLDK int identity PRIMARY KEY,
-	MaDL int NOT NULL, --FK--
-	MaLVS int NOT NULL, --FK--
-	NgayDangKy DATETIME,
-	SoLuong INT
-)
-CREATE TABLE PhanPhoi
-(
-	MaPP int identity PRIMARY KEY,
-	MaLVS int Not Null,--fk
-	MaDL int NOT NULL, --FK--
-	Ngay DATE,
-	SoLuongGiao INT,
-	SoLuongBan INT,
-	TiLe FLOAT
-)
-ALTER TABLE SLDangKy
-	ADD
-		CONSTRAINT FK_SLDK_DaiLy_MaDL FOREIGN KEY (MaDL) REFERENCES DaiLy(MaDL),
-		CONSTRAINT FK_SLDK_LoaiVeSo_MaLVS FOREIGN KEY (MaLVS) REFERENCES LoaiVeSo(MaLVS)
-
-ALTER TABLE PhanPhoi
-	ADD
-		CONSTRAINT FK_PhanPhoi_LoaiVeSo_MaLVS FOREIGN KEY (MaLVS) REFERENCES LoaiVeSo(MaLVS),
-		
-		CONSTRAINT FK_PhanPhoi_DaiLy_MaDL FOREIGN KEY (MaDL) REFERENCES DaiLy(MaDL)
-
-alter table PhanPhoi drop column MaLVS
-select* from SLDangKy
-select* from DaiLy
-select* from LoaiVeSo
-select * from PhanPhoi
-
-insert into SLDangKy (MaDL, MaLVS, NgayDangKy, SoLuong)
-values (1,2,'10/01/2018', 100),
- (1,3,'10/01/2018', 100),
- (2,3,'10/01/2018', 100)
- exec capnhatphanphoi
-alter proc capnhatphanphoi
+﻿
+create proc capnhatphanphoi
 as
 	declare cur cursor for
 	select tb2.MaDL, tb2.MaLVS, tb2.SoLuong from 
@@ -114,7 +71,7 @@ as
 go
 
 
-ALTER TRIGGER TG_Them_TiLe ON PhanPhoi AFTER UPDATE
+create TRIGGER TG_Them_TiLe ON PhanPhoi AFTER UPDATE
 AS
 	DECLARE @MaPP INT
 	DECLARE @SoLuongGiaoInserted INT
@@ -162,15 +119,15 @@ AS
 	END
 GO
 
-select *
-from PhanPhoi
+--select *
+--from PhanPhoi
 
-update PhanPhoi
-set SoLuongBan = 70
-where MaPP = 3
---- neu tinh trang bang khoa thi k cho cap nhat
+--update PhanPhoi
+--set SoLuongBan = 70
+--where MaPP = 3
+----- neu tinh trang bang khoa thi k cho cap nhat
 
-exec capnhatphanphoi
+--exec capnhatphanphoi
 
 
 

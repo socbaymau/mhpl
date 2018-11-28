@@ -1,10 +1,4 @@
-﻿@model IEnumerable<object>
-@{
-    List<WebApplication1.Models.Kqxs> lstkqxs = Model.ToList()[0] as List<WebApplication1.Models.Kqxs>;
-    List<WebApplication1.Models.LoaiVeSo> lstlvs = Model.ToList()[1] as List<WebApplication1.Models.LoaiVeSo>;
-    List<WebApplication1.Models.PhanPhoi> lstPP = Model.ToList()[2] as List<WebApplication1.Models.PhanPhoi>;
-    List<WebApplication1.Models.Giai> lstG = Model.ToList()[3] as List<WebApplication1.Models.Giai>;
-}
+﻿@model IEnumerable<Kqxs>
 @{
     ViewData["Title"] = "KQXS";
     Layout = "~/Views/Shared/MenuLayout.cshtml";
@@ -28,7 +22,7 @@
                 <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
         </div>*@
-    <form class="search-form" >
+    <form class="search-form" asp-controller="QuanLi" asp-action="Search">
 
         <input type="text" class="form-control form-timkiem" placeholder="Tìm kiếm" id="search" name="search" />
         <button type="submit" class="btn btn-info btn-sm format-button button btn-search">
@@ -38,50 +32,25 @@
     </form>
     <table class="table table-bordered table-hover table-loaiveso-noidung">
         <tr style="background-color:#abebe2">
-            <th>Mã KQ</th>
-            <th>Mã VS</th>
+            <th>Mã kết quả</th>
+            <th>Loại vé số</th>
             <th>Giải</th>
+            <th>Số trúng</th>
             <th>Ngày</th>
-            <th>KQ</th>
-            <th>Tỉnh</th>
             <th style="width: 50px;"></th>
         </tr>
 
-        @foreach (var item in lstkqxs)
+        @foreach (var item in Model)
         {
             <tr>
-                <td class="kq_kqsx">
-                    @Html.DisplayFor(modelItem => item.MaKq)
-                </td>
-                <td class="id">
-                    @Html.DisplayFor(modelItem => item.MaLvs)
-                </td>
-                @foreach (var item1 in lstG)
-                {
-                    if (item.MaGiai == item1.MaGiai)
-                    {
-                        <td class="tinh">
-                            @Html.DisplayFor(modelItem => item1.TenGiai)
-                        </td>
-                    }
-                }
-                <td class="tinhtrang">
-                    @Html.DisplayFor(modelItem => item.Ngay)
-                </td>
-                <td class="ngay">
-                    @Html.DisplayFor(modelItem => item.SoTrung)
-                </td>
-                @foreach (var item2 in lstlvs)
-                {
-                    if (item.MaLvs == item2.MaLvs)
-                    {
-                        <td class="tinh">
-                            @Html.DisplayFor(modelItem => item2.Tinh)
-                        </td>}
-                }
-                <td>
-                    <button type="button" class="btn btn-info btn-sm format-button btnSua" data-toggle="modal" data-target="#Sua">Sửa</button>
-                </td>
+                <td>@item.MaKq</td>
+                <td>@item.MaLvsNavigation.Tinh</td>
+                <td>@item.MaGiaiNavigation.TenGiai</td>
+                <td>@item.SoTrung</td>
+                <td>@item.Ngay</td>
+                @*<td>
+                        <button type="button" class="btn btn-info btn-sm format-button">Khoá</button>
+                    </td>*@
             </tr>
         }
 
@@ -106,10 +75,8 @@
     <!-- Modal Them -->
 
     <form asp-action="ThemKQXS" asp-controller="QuanLi" method="post">
-
         <div id="Them" class="modal fade" role="dialog">
             <div class="modal-dialog">
-
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -117,33 +84,31 @@
                         <h4 class="modal-title">Thêm</h4>
                     </div>
                     <div class="modal-body">
-                        @*<div class="form-group">
-                                <label for="usr">Id:</label>
-                                <input type="text" class="form-control" id="id" disabled>
-                            </div>*@
                         <div class="form-group">
-                            <label for="usr">Mã KQ:</label>
-                            <input type="text" class="form-control" id="mkq" readonly>
+                            <label for="usr">Mã LVS:</label>
+                            <select class="form-control" id="loaiveso" name="malvs">
+                                @foreach (var item in ViewBag.LoaiVeSo)
+                                {
+                                    <option value="@item.MaLvs">@item.Tinh</option>
+                                }
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="usr">Mã VS:</label>
-                            <input type="text" class="form-control" name="mavs">
+                            <label for="usr">Giải</label>
+                            <select class="form-control" id="tt" name="giai" style="width:150px">
+                                @foreach (var item in ViewBag.Giai)
+                                {
+                                    <option value=@item.MaGiai> @item.TenGiai</option>}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="usr">Số Trúng:</label>
                             <input type="text" class="form-control" name="sotrung">
                         </div>
                         <div class="form-group">
-                            <label for="usr">Giải</label>
-                            <select class="form-control" id="tt" name="giai" style="width:150px">
-                                @foreach (var item in lstG)
-                                {
-                                    <option value=@item.MaGiai> @item.TenGiai</option>}
-                            </select>
+                            <label for="usr">Ngày</label>
+                            <input type="text" class="form-control" name="ngay" value="@DateTime.Now">
                         </div>
-                        <label for="usr">Mặc đinh là ngày hiện tại</label>
-
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -155,49 +120,43 @@
         </div>
     </form>
     <!-- Modal Sua-->
-    <form asp-action="SuaKQXS" asp-controller="QuanLi" method="post">
-        <div id="Sua" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+    @*<form asp-action="SuaKQXS" asp-controller="QuanLi" method="post">
+            <div id="Sua" class="modal fade" role="dialog">
+                <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Sửa</h4>
+                     Modal content
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Sửa</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="usr">Mã KQ:</label>
+                                <input type="text" class="form-control makq-edit" id="mkq" name="makq" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="usr">Mã vé số:</label>
+                                <input type="text" class="form-control ma-edit" id="mvs" name="edMaVS">
+                            </div>
+                            <div class="form-group">
+                                <label for="usr">Giải</label>
+                                <select class="form-control" id="tt" name="edGiai" style="width:150px">
+                                    @foreach (var item in lstG)
+                                    {
+                                        <option value=@item.MaGiai> @item.TenGiai</option>}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        @*<div class="form-group">
-                                <label for="usr">Id:</label>
-                                <input type="text" class="form-control" id="id" disabled>
-                            </div>*@
-                        <div class="form-group">
-                            <label for="usr">Mã KQ:</label>
-                            <input type="text" class="form-control makq-edit" id="mkq" name="makq" readonly>
 
-                        </div>
-                        <div class="form-group">
-                            <label for="usr">Mã vé số:</label>
-                            <input type="text" class="form-control ma-edit" id="mvs" name="edMaVS">
-
-                        </div>
-                        <div class="form-group">
-                            <label for="usr">Giải</label>
-                            <select class="form-control" id="tt" name="edGiai" style="width:150px">
-                                @foreach (var item in lstG)
-                                {
-                                    <option value=@item.MaGiai> @item.TenGiai</option>}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                    </div>
                 </div>
-
             </div>
-        </div>
-    </form>
+        </form>*@
 </div>
 
 
@@ -206,7 +165,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link href="~/css/table.css" rel="stylesheet" />
 @*<link href="~/css/style2.css" rel="stylesheet" />*@
-<script>
+<@*script>
     $(".btnSua").click(function () {
         var Ma = $(this).closest('tr').find('.id').text();
         var Makq = $(this).closest('tr').find('.kq_kqsx').text();
@@ -214,4 +173,4 @@
         $(".ma-edit").val(Ma.trim());
         $(".makq-edit").val(Makq.trim());
     })
-</script>
+</script>*@

@@ -1,51 +1,167 @@
-﻿
+﻿@model IEnumerable<PhieuThu>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/MenuLayout.cshtml";
 }
-
 <h2>Phiếu Thu</h2>
 
 <div class="table">
     <button type="button" class="btn btn-info btn-sm format-button button" data-toggle="modal" data-target="#Them">Nhập Phiếu</button>
-    <form action="" class="search-form push-left">
-        <div class="form-group has-feedback">
-            <label for="search" class="sr-only">Search</label>
-            <input type="text" class="form-control" name="search" id="search" placeholder="search">
-            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-        </div>
+    <form class="search-form" asp-controller="PhieuThu" asp-action="timkiem" method="post">
+
+        <input type="search" class="form-control form-timkiem" placeholder="Nhập ngày" name="str" />
+        <button type="submit" class="btn btn-info btn-sm format-button button btn-search" data-toggle="modal">
+            @*<i class="fa fa-search"></i>*@
+            Tìm
+        </button>
+
     </form>
     <table class="table table-bordered table-hover table-loaiveso-noidung">
         <tr style="background-color:#abebe2">
-            <th>Ngày</th>
+            <th>Mã phiếu thu</th>
             <th>Đại Lý</th>
+            <th>Ngày</th>
             <th>Số Tiền</th>
             <th style="width: 50px;"></th>
         </tr>
-        @*   @foreach (var item in Model)
+        @foreach (var item in Model)
         {
-            <tr>
-                <td class="id">
-                    @Html.DisplayFor(modelItem => item.MaLvs)
-                </td>
-                <td class="tinh">
-                    @Html.DisplayFor(modelItem => item.Tinh)
-                </td>
-                <td class="tinhtrang">
-                    @Html.DisplayFor(modelItem => item.TinhTrang)
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-sm format-button btnSua" data-toggle="modal" data-target="#Sua">Sửa</button>
-                </td>
-            </tr>
-
-        }*@
+        <tr>
+            <td class="item_ma">@item.MaPt</td>
+            <td class="item_ten">
+                @Html.DisplayFor(modelItem => item.MaDlNavigation.Ten)
+            </td>
+            <td class="item_ngay">
+                @Html.DisplayFor(modelItem => item.Ngay)
+            </td>
+            <td class="item_tien">
+                @Html.DisplayFor(modelItem => item.SoTien)
+            </td>
+            <td>
+                <button type="button" class="btn btn-info btn-sm format-button btnSua" data-toggle="modal" data-target="#Sua">Sửa</button>
+            </td>
+        </tr>
+        }
     </table>
+    <form asp-action="ThemPT" asp-controller="PhieuThu" method="post">
+        <div id="Them" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Thêm</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Tên đại lý</label>
+                                <select class="form-control" id="tt" name="daily">
+                                    @foreach (var item in ViewBag.DaiLy)
+                                    {
+                                        <option value="@item.MaDl">@item.Ten</option>
+                                    }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Ngày:</label>
+                            <input type="date" class="form-control" id="Ngay" name="Ngay" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Số Tiền:</label>
+                            <input type="text" class="form-control" id="Tien" name="tien" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <form asp-action="Sua" asp-controller="PhieuThu" method="post">
+        <div id="Sua" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Sửa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="usr">Mã:</label>
+                            <input type="text" class="form-control" id="ided" name="maed" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Đại Lý</label>
+                            <select class="form-control" id="edtt" name="eddaily">
+                                @foreach (var iteam in ViewBag.DaiLy)
+                                {
+                                    <option value="@iteam.MaDl"> @iteam.Ten</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Ngày:</label>
+                            <input type="date" class="form-control" id="ngay" name="edngay" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Số Tiền:</label>
+                            <input type="text" class="form-control" id="tien" name="edtien" required />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
 </div>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="~/css/table.css" rel="stylesheet" />
-
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="~/css/table.css" rel="stylesheet" />
+<script>
+    $(".btnSua").click(function () {
+        var Ma = $(this).closest('tr').find('.item_ma').text();
+        var sTen = $(this).closest('tr').find('.item_ten').text().trim();
+        var sNgay = $(this).closest('tr').find('.item_ngay').text();
+        var sTien = $(this).closest('tr').find('.item_tien').text();
+        if (sTen != '') {
+            $("#edtt option").each(function () {
+                if ($(this).text().includes(sTen)) {
+                    $(this).attr('selected', true);
+                    //return;
+                }
+                else {
+                    $(this).attr('selected', false);
+                }
+            });
+        }
+        sNgay = sNgay.trim();
+        let month = sNgay.substring(0, sNgay.indexOf('/'));
+        if (parseInt(month) < 10) {
+            month = '0' + month;
+        }
+        sNgay = sNgay.substring(sNgay.indexOf('/') + 1);
+        let day = sNgay.substring(0, sNgay.indexOf('/'));
+        if (parseInt(day) < 10) {
+            day = '0' + day;
+        }
+        sNgay = sNgay.substring(sNgay.indexOf('/') + 1);
+        let year = sNgay.substring(0, sNgay.indexOf(' '));
+        $("#ngay").val(`${year}-${month}-${day}`);
+        $("#tien").val(sTien.trim());
+        $("#ided").val(Ma.trim());
+    })
+</script>

@@ -184,21 +184,22 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult KQXS()
         {
-
-            List<object> list = new List<object>();
-            list.Add(vsc.Kqxs.OrderByDescending(x => x.Ngay).ToList());
-            list.Add(vsc.LoaiVeSo.ToList());
-            list.Add(vsc.PhanPhoi.ToList());
-            list.Add(vsc.Giai.ToList());
+            List<Kqxs> list = vsc.Kqxs.OrderBy(k => k.MaKq).Include(s => s.MaLvsNavigation).Include(s => s.MaGiaiNavigation).ToList();
+            List<LoaiVeSo> lvs = vsc.LoaiVeSo.ToList();
+            List<Giai> pgiai = vsc.Giai.ToList();
+            var psolanquay = vsc.Giai.Select(sl => sl.SoLanQuay).ToList();
+            var pso = vsc.Giai.Select(so => so.So).ToList();
+            ViewBag.SoLanQuay = psolanquay;
+            ViewBag.So = pso;
+            ViewBag.LoaiVeSo = lvs;
+            ViewBag.Giai = pgiai;
             return View(list);
         }
         [HttpPost]
-        public IActionResult ThemKQXS(int mavs, int sotrung, int kq, int giai, DateTime ngay)
+        public IActionResult ThemKQXS(int malvs, int giai,int sotrung, DateTime ngay)
         {
-            ngay = DateTime.Now;
             Kqxs xs = new Kqxs();
-            xs.MaKq = kq;
-            xs.MaLvs = mavs;
+            xs.MaLvs = malvs;
             xs.MaGiai = giai;
             xs.SoTrung = sotrung;
             xs.Ngay = ngay;
@@ -207,14 +208,20 @@ namespace WebApplication1.Controllers
             return RedirectToAction("KQXS", "QuanLi");
 
         }
-        [HttpPost]
-        public IActionResult SuaKQXS(int makq, int edMaVS, int edGiai)
+        public IActionResult Search(string search)
         {
-            var xs = vsc.Kqxs.Where(x => x.MaKq == makq).SingleOrDefault();
-            xs.MaGiai = edGiai;
-            xs.MaLvs = edMaVS;
-            vsc.SaveChanges();
-            return RedirectToAction("KQXS", "QuanLi");
+            List<Kqxs> timkiem = vsc.Kqxs.Where(x => Convert.ToString(x.MaKq).Contains(search) || x.MaLvsNavigation.Tinh.Contains(search) || x.MaGiaiNavigation.TenGiai.Contains(search) || Convert.ToString(x.SoTrung).Contains(search) || x.Ngay.ToString().Contains(search)).ToList();
+            return View("KQXS", timkiem);
         }
+
+        //[HttpPost]
+        //public IActionResult SuaKQXS(int makq, int edMaVS, int edGiai)
+        //{
+        //    var xs = vsc.Kqxs.Where(x => x.MaKq == makq).SingleOrDefault();
+        //    xs.MaGiai = edGiai;
+        //    xs.MaLvs = edMaVS;
+        //    vsc.SaveChanges();
+        //    return RedirectToAction("KQXS", "QuanLi");
+        //}
     }
 }

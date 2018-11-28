@@ -6,11 +6,9 @@ namespace WebApplication1.Models
     public partial class PhieuChi
     {
         public int MaPc { get; set; }
-        public int? MaDl { get; set; }
+        public string TenPhieuChi { get; set; }
         public DateTime? Ngay { get; set; }
-        public decimal? SoTien { get; set; }
+        public double? SoTien { get; set; }
         public string NoiDung { get; set; }
-
-        public DaiLy MaDlNavigation { get; set; }
     }
 }

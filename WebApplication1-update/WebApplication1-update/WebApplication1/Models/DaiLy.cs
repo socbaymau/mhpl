@@ -9,7 +9,6 @@ namespace WebApplication1.Models
         {
             CongNo = new HashSet<CongNo>();
             PhanPhoi = new HashSet<PhanPhoi>();
-            PhieuChi = new HashSet<PhieuChi>();
             PhieuThu = new HashSet<PhieuThu>();
             SldangKy = new HashSet<SldangKy>();
         }
@@ -22,7 +21,6 @@ namespace WebApplication1.Models
 
         public ICollection<CongNo> CongNo { get; set; }
         public ICollection<PhanPhoi> PhanPhoi { get; set; }
-        public ICollection<PhieuChi> PhieuChi { get; set; }
         public ICollection<PhieuThu> PhieuThu { get; set; }
         public ICollection<SldangKy> SldangKy { get; set; }
     }
