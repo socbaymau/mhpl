@@ -24,16 +24,18 @@ namespace WebApplication1.Controllers
             ViewBag.DaiLy = daily;
             return View(list);
         }
-        public IActionResult ThemPT(String ngay, String daily, String tien)
-        {
-            PhieuThu pt = new PhieuThu();
-            pt.MaDl = Convert.ToInt32(daily);
-            pt.Ngay = Convert.ToDateTime(ngay);
-            pt.SoTien = float.Parse(tien);
-            vsc.PhieuThu.Add(pt);
-            vsc.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //public IActionResult ThemPT()
+        //public IActionResult ThemPT(String ngay, String daily, String tien)
+        //{
+        //    //PhieuThu pt = new PhieuThu();
+        //    //pt.MaDl = Convert.ToInt32(daily);
+        //    //pt.Ngay = Convert.ToDateTime(ngay);
+        //    //pt.SoTien = 
+        //    //vsc.PhieuThu.Add(pt);
+        //    //vsc.SaveChanges();
+        //    //return RedirectToAction("Index");
+
+        //}
         //public IActionResult SuaThieuThu(String id, String ngay, String daily, String tien)
         //{
         //    var pt = vsc.PhieuThu.Where(x => x.MaPt == Convert.ToInt32(id)).SingleOrDefault();
@@ -43,15 +45,15 @@ namespace WebApplication1.Controllers
         //    vsc.SaveChanges();
         //    return RedirectToAction("PhieuThu");
         //}
-        public IActionResult Sua(int maed, int eddaily, DateTime edngay, float edtien)
-        {
-            PhieuThu pt = vsc.PhieuThu.Where(p => p.MaPt == maed).SingleOrDefault();
-            pt.MaDl = eddaily;
-            pt.Ngay = edngay;
-            pt.SoTien = edtien;
-            vsc.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //public IActionResult Sua(int maed, int eddaily, DateTime edngay, float edtien)
+        //{
+        //    PhieuThu pt = vsc.PhieuThu.Where(p => p.MaPt == maed).SingleOrDefault();
+        //    pt.MaDl = eddaily;
+        //    pt.Ngay = edngay;
+        //    pt.SoTien = edtien;
+        //    vsc.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
         public IActionResult timkiem(String str)
         {
             List<PhieuThu> list = new List<PhieuThu>();

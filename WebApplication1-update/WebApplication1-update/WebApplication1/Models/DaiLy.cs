@@ -17,6 +17,7 @@ namespace WebApplication1.Models
         public string Ten { get; set; }
         public string DiaChi { get; set; }
         public string DienThoai { get; set; }
+        public int? HoaHong { get; set; }
         public string TinhTrang { get; set; }
 
         public ICollection<CongNo> CongNo { get; set; }

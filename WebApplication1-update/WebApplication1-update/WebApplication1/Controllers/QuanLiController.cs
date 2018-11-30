@@ -117,23 +117,25 @@ namespace WebApplication1.Controllers
             daily = vsc.DaiLy.ToList();
             return View(daily);
         }
-        public IActionResult ThemDL(string Ten, string DiaChi, string DienThoai, string TinhTrang)
+        public IActionResult ThemDL(string Ten, string DiaChi, string DienThoai,string HoaHong, string TinhTrang)
         {
             DaiLy dl = new DaiLy();
             dl.Ten = Ten;
             dl.DiaChi = DiaChi;
             dl.DienThoai = DienThoai;
+            dl.HoaHong = int.Parse(HoaHong);
             dl.TinhTrang = TinhTrang;
             vsc.DaiLy.Add(dl);
             vsc.SaveChanges();
             return RedirectToAction("DaiLy");
         }
-        public IActionResult SuaDL (int edmadl,string edten,string eddiachi,string eddienthoai,string edtt)
+        public IActionResult SuaDL (int edmadl,string edten,string eddiachi,string eddienthoai, string edhoahong,string edtt)
         {
             var dl = vsc.DaiLy.Where(x => x.MaDl == edmadl).SingleOrDefault();
             dl.Ten = edten;
             dl.DiaChi = eddiachi;
             dl.DienThoai = eddienthoai;
+            dl.HoaHong = int.Parse(edhoahong);
             dl.TinhTrang = edtt;
             vsc.SaveChanges();
             return RedirectToAction("DaiLy");

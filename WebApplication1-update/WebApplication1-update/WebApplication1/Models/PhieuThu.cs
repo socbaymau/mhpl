@@ -9,6 +9,8 @@ namespace WebApplication1.Models
         public int? MaDl { get; set; }
         public DateTime? Ngay { get; set; }
         public double? SoTien { get; set; }
+        public double? Tra { get; set; }
+        public double? ConLai { get; set; }
 
         public DaiLy MaDlNavigation { get; set; }
     }

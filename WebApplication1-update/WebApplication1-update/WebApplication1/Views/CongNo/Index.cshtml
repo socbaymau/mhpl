@@ -18,25 +18,27 @@
     <table class="table table-bordered table-hover table-loaiveso-noidung">
         <tr style="background-color:#abebe2">
             <th>Mã công nợ</th>
-            <th>Tên đại lý</th>
+            <th>Mã đại lý</th>
             <th>Ngày</th>
             <th>Số tiền</th>
             <th>Hoa hồng</th>
             <th>Tổng tiền</th>
+            <th></th>
         </tr>
         @foreach (var item in Model)
         {
             <tr>
                 <td>@item.MaCn</td>
-                <td>@item.MaDlNavigation.Ten</td>
+                <td class="madl">@item.MaDl</td>
                 <td>@item.Ngay</td>
                 <td>@item.SoTien</td>
                 <td>@item.HoaHong</td>
-                <td>@item.TongTien</td>
+                <td class="tongtien">@item.TongTien</td>
+                <td><button type="button" class="btn btn-info btn-sm format-button btnThem" data-toggle="modal" data-target="#Them">Thêm phiếu thu</button></td>
             </tr>
         }
     </table>
-    @*<form asp-action="ThemCN" asp-controller="CongNo" method="post">
+    <form asp-action="ThemPT" asp-controller="CongNo" method="post">
         <div id="Them" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
@@ -48,22 +50,25 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="usr">Tên đại lý</label>
-                            <select class="form-control" id="tt" name="daily">
-                                @foreach (var item in ViewBag.DaiLy)
-                                {
-                                    <option value="@item.MaDl">@item.Ten</option>
-                                }
-                            </select>
+                            <label for="usr">Mã đại lý</label>
+                            <input type="text" class="form-control" id="aMa" name="add_Madl" required />
                         </div>
                         <div class="form-group">
                             <label for="usr">Ngày:</label>
-                            <input type="date" class="form-control" id="Ngay" name="Ngay" required />
+                            <input type="date" class="form-control" id="aNgay" name="add_Ngay" required />
                         </div>
                         <div class="form-group">
                             <label for="usr">Số Tiền:</label>
-                            <input type="text" class="form-control" id="Tien" name="tien" required />
+                            <input type="text" class="form-control" id="aTien" name="add_Tien" required />
                         </div>
+                        <div class="form-group">
+                            <label for="usr">Đã trả:</label>
+                            <input type="text" class="form-control" id="aDaTra" name="add_DaTra" required />
+                        </div>
+                        @*<div class="form-group">
+                            <label for="usr">Còn lại:</label>
+                            <input type="text" class="form-control" id="aConLai" name="add_ConLai" required />
+                        </div>*@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -73,55 +78,20 @@
 
             </div>
         </div>
-    </form>*@
-
-    @*<form asp-action="Sua" asp-controller="PhieuThu" method="post">
-        <div id="Sua" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                 Modal content
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Sửa</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="usr">Mã:</label>
-                            <input type="text" class="form-control" id="ided" name="maed" readonly />
-                        </div>
-                        <div class="form-group">
-                            <label for="usr">Đại Lý</label>
-                            <select class="form-control" id="edtt" name="eddaily">
-                                @foreach (var iteam in ViewBag.DaiLy)
-                                {
-                                    <option value="@iteam.MaDl"> @iteam.Ten</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="usr">Ngày:</label>
-                            <input type="text" class="form-control" id="ngay" name="edngay" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="usr">Số Tiền:</label>
-                            <input type="text" class="form-control" id="tien" name="edtien" required />
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </form>*@
+    </form>
 </div>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link href="~/css/table.css" rel="stylesheet" />
-
+<script>
+    $(function () {
+        $(".btnThem").click(function () {
+            var pMa = $(this).closest('tr').find('.madl').text();
+            var pSoTien = $(this).closest('tr').find('.tongtien').text();
+            $("#aMa").val(pMa.trim());
+            $("#aTien").val(pSoTien.trim());
+        });
+    });
+</script>

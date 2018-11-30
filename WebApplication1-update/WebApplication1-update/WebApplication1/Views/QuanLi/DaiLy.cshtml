@@ -21,6 +21,7 @@
             <th>Tên đại lý</th>
             <th>Địa chỉ</th>
             <th>Điện thoại</th>
+            <th>Hoa hồng</th>
             <th>Tình trạng</th>
             <th>Số lượng đăng ký</th>
             <th style="width: 50px;"></th>
@@ -40,6 +41,9 @@
                 </td>
                 <td class="dienthoai">
                     @Html.DisplayFor(modelItem => item.DienThoai)
+                </td>
+                <td class="hoahong">
+                    @item.HoaHong
                 </td>
                 <td class="tinhtrang">
                     @Html.DisplayFor(modelItem => item.TinhTrang)
@@ -71,9 +75,9 @@
                     </div>
                     <div class="modal-body">
                         @*<div class="form-group">
-                                <label for="usr">Mã đại lý:</label>
-                                <input type="text" class="form-control" id="id" readonly>
-                            </div>*@
+            <label for="usr">Mã đại lý:</label>
+            <input type="text" class="form-control" id="id" readonly>
+        </div>*@
                         <div class="form-group">
                             <label for="usr">Tên:</label>
                             <input type="text" class="form-control" id="ten" name="Ten" required>
@@ -85,6 +89,10 @@
                         <div class="form-group">
                             <label for="usr">Điện thoại:</label>
                             <input type="text" class="form-control" id="dienthoai" name="DienThoai">
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Hoa hồng</label>
+                            <input type="text" class="form-control" id="hoahong" name="HoaHong">
                         </div>
                         <div class="form-group">
                             <label for="usr">Tình trạng</label>
@@ -130,6 +138,10 @@
                         <div class="form-group">
                             <label for="usr">Điện thoại:</label>
                             <input type="text" class="form-control eddt" id="dienthoai" name="eddienthoai">
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">Hoa hồng:</label>
+                            <input type="text" class="form-control edhh" id="hoahong" name="edhoahong">
                         </div>
                         <div class="form-group">
                             <label for="usr">Tình trạng</label>
@@ -224,7 +236,8 @@
                 var Ten = $(this).closest('tr').find('.ten').text();
                 var DiaChi = $(this).closest('tr').find('.diachi').text();
                 var DienThoai = $(this).closest('tr').find('.dienthoai').text();
-
+                var HoaHong = $(this).closest('tr').find('.hoahong').text();
+                $(".edhh").val(HoaHong.trim());
                 $(".edid").val(Ma.trim());
                 $(".edten").val(Ten.trim());
                 $(".eddc").val(DiaChi.trim());
